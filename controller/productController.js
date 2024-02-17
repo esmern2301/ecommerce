@@ -1,41 +1,73 @@
 const userSchema = require("../models/userSchema");
+const productSchema = require("../models/productSchema");
+const variantSchema = require("../models/variantSchema");
 
-async function secureProductUpload(req, res, next) {
-  const userid = req.headers.authorization.split('@')[1];
-  const password = req.headers.authorization.split('@')[2];
+async function secureProductUploadController(req, res, next) {
+  const userid = req.headers.authorization.split("@")[1];
+  const password = req.headers.authorization.split("@")[2];
 
   if (!req.headers.authorization) {
     return res.json({ error: "Unauthorized: Missing authorization header" });
   }
 
-
   try {
-    const user = await userSchema.find({ _id: userid })
+    const user = await userSchema.find({ _id: userid });
     if (user.length > 0) {
-      if(password == "Gycfs7oI40?"){
+      if (password == "Gycfs7oI40?") {
         console.log(user[0].role);
-        if(user[0].role ==  'mercant'){
-          res.json({ success: "Congratulations...! You are  able to create product" })
-          next()
-        }else{
-          res.json({ error: "You are not able to create product" })
+        if (user[0].role == "mercant") {
+          next();
+        } else {
+          res.json({ error: "You are not able to create product" });
         }
-      }else{
-        res.json({ error: "User password not match" })
-
+      } else {
+        res.json({ error: "User password not match" });
       }
     } else {
-      res.json({ error: "You r not user" })
+      res.json({ error: "You r not user" });
     }
-
   } catch {
-    return res.json({ error: "Unauthorized: You are not able to create product" });
+    return res.json({
+      error: "Unauthorized: You are not able to create product",
+    });
   }
-
 }
 
-function createProduct() {
-  console.log("create product");
+function createProductController(req, res) {
+  const { name, description, image, store } = req.body;
+
+  const product = new productSchema({
+    name,
+    description,
+    image,
+    store,
+  });
+  product.save();
+  res.json({ success: "Product created Successfull" });
 }
 
-module.exports = { secureProductUpload, createProduct };
+async function createVariantController(req, res) {
+  const { name, image, price, quantity, product } = req.body;
+  console.log(name, image, price, quantity, product);
+
+  const variant = new variantSchema({
+    name,
+    image,
+    price,
+    quantity,
+    product,
+  });
+  variant.save();
+  await productSchema.findOneAndUpdate(
+    { _id: variant.product },
+    { $push: { variants: variant.id } },
+    { new: true }
+  );
+  res.json({ success: "variant created Successful" });
+}
+
+module.exports = {
+  secureProductUploadController,
+  createProductController,
+  createVariantController,
+};
