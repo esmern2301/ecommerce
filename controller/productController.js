@@ -2,6 +2,7 @@ const userSchema = require("../models/userSchema");
 const productSchema = require("../models/productSchema");
 const variantSchema = require("../models/variantSchema");
 
+
 async function secureProductUploadController(req, res, next) {
   const userid = req.headers.authorization.split("@")[1];
   const password = req.headers.authorization.split("@")[2];
@@ -34,12 +35,11 @@ async function secureProductUploadController(req, res, next) {
 }
 
 function createProductController(req, res) {
-  const { name, description, image, store } = req.body;
+  const { name, description, store } = req.body;
 
   const product = new productSchema({
     name,
     description,
-    image,
     store,
   });
   product.save();
@@ -47,22 +47,25 @@ function createProductController(req, res) {
 }
 
 async function createVariantController(req, res) {
-  const { name, image, price, quantity, product } = req.body;
-  console.log(name, image, price, quantity, product);
+  const { color, storage, ram, size, image, price, quantity, product } = req.body;
 
-  const variant = new variantSchema({
-    name,
-    image,
-    price,
-    quantity,
-    product,
-  });
-  variant.save();
-  await productSchema.findOneAndUpdate(
-    { _id: variant.product },
-    { $push: { variants: variant.id } },
-    { new: true }
-  );
+  console.log(req.file);
+  // const variant = new variantSchema({
+  //   color,
+  //   storage,
+  //   ram,
+  //   size,
+  //   image,
+  //   price,
+  //   quantity,
+  //   product,
+  // });
+  // variant.save();
+  // await productSchema.findOneAndUpdate(
+  //   { _id: variant.product },
+  //   { $push: { variants: variant.id } },
+  //   { new: true }
+  // );
   res.json({ success: "variant created Successful" });
 }
 

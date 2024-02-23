@@ -2,9 +2,17 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const variantSchema = new Schema({
-  name: {
+  storage:{
     type: String,
-    required: true,
+  },
+  color:{
+    type: String
+  },
+  ram:{
+   type:String
+  },
+  size:{
+    type: String
   },
   image: {
     type: String,
@@ -21,6 +29,7 @@ const variantSchema = new Schema({
   product: {
     type: Schema.Types.ObjectId,
     ref: "product",
+    required: true
   },
   created: {
     type: Date,
