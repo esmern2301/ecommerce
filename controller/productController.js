@@ -2,7 +2,6 @@ const userSchema = require("../models/userSchema");
 const productSchema = require("../models/productSchema");
 const variantSchema = require("../models/variantSchema");
 
-
 async function secureProductUploadController(req, res, next) {
   const userid = req.headers.authorization.split("@")[1];
   const password = req.headers.authorization.split("@")[2];
@@ -47,25 +46,26 @@ function createProductController(req, res) {
 }
 
 async function createVariantController(req, res) {
-  const { color, storage, ram, size, image, price, quantity, product } = req.body;
+  const { color, storage, ram, size, image, price, quantity, product } =
+    req.body;
 
-  console.log(req.file);
-  // const variant = new variantSchema({
-  //   color,
-  //   storage,
-  //   ram,
-  //   size,
-  //   image,
-  //   price,
-  //   quantity,
-  //   product,
-  // });
-  // variant.save();
-  // await productSchema.findOneAndUpdate(
-  //   { _id: variant.product },
-  //   { $push: { variants: variant.id } },
-  //   { new: true }
-  // );
+  console.log("image", req.file.filename);
+  const variant = new variantSchema({
+    color,
+    storage,
+    ram,
+    size,
+    image: `http://localhost:3000/upload/${req.file.filename}`,
+    price,
+    quantity,
+    product,
+  });
+  variant.save();
+  await productSchema.findOneAndUpdate(
+    { _id: variant.product },
+    { $push: { variants: variant.id } },
+    { new: true }
+  );
   res.json({ success: "variant created Successful" });
 }
 
