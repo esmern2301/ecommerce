@@ -69,8 +69,15 @@ async function createVariantController(req, res) {
   res.json({ success: "variant created Successful" });
 }
 
+
+async function allProductController(req,res){
+  let data = await productSchema.find({})
+  res.send(data)
+}
+
 module.exports = {
   secureProductUploadController,
   createProductController,
   createVariantController,
+  allProductController
 };
