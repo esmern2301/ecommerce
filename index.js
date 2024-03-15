@@ -5,17 +5,17 @@ const app = express();
 const path = require("path");
 const route = require("./route");
 
-app.use(cors())
 app.use(express.json());
+app.use(cors())
 app.use(route);
 
 
 
-const corsOptions = {
-  origin: '*',
-};
+// const corsOptions = {
+//   origin: '*',
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 const port = 3000;
 dbConnection();
 app.use("/upload", express.static(path.join(__dirname, "upload")));

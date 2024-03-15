@@ -4,7 +4,8 @@ const {
   createProductController,
   secureProductUploadController,
   createVariantController,
-  allProductController
+  allProductController,
+  deleteProductController
 } = require("../../controller/productController");
 
 const router = express.Router();
@@ -29,6 +30,7 @@ router.post(
 );
 
 router.post("/createvariant",upload.single('image'), createVariantController);
-router.get("/allproduct", allProductController)
+router.get("/allproduct", allProductController);
+router.post("/deleteproduct", deleteProductController)
 
 module.exports = router;
