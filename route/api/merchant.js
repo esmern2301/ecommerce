@@ -1,8 +1,11 @@
 const express = require("express");
-const becomeMerchantController = require("../../controller/merchantController");
+const {
+  becomeMerchantController,
+  allStoreController,
+} = require("../../controller/merchantController");
 const router = express.Router();
 
-router.post("/becomemerchant", becomeMerchantController)
-
+router.post("/becomemerchant", becomeMerchantController);
+router.get("/allstore", allStoreController);
 
 module.exports = router;
