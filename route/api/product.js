@@ -6,6 +6,7 @@ const {
   createVariantController,
   allProductController,
   deleteProductController,
+  getAllVariantController
 } = require("../../controller/productController");
 
 const router = express.Router();
@@ -37,6 +38,7 @@ const upload = multer({ storage: storage });
 router.post("/productupload", createProductController);
 
 router.post("/createvariant", upload.single("image"), createVariantController);
+router.get("/allvariant", getAllVariantController)
 router.get("/allproduct", allProductController);
 router.post("/deleteproduct", deleteProductController);
 

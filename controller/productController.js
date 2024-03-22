@@ -69,6 +69,10 @@ async function createVariantController(req, res) {
   res.json({ success: "variant created Successful" });
 }
 
+async function getAllVariantController(req,res){
+  const data =await variantSchema.find({})
+  res.send(data)
+}
 
 async function allProductController(req,res){
   let data = await productSchema.find({}).populate("store")
@@ -86,5 +90,6 @@ module.exports = {
   createProductController,
   createVariantController,
   allProductController,
-  deleteProductController
+  deleteProductController,
+  getAllVariantController
 };
