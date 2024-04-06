@@ -12,4 +12,20 @@ async function emailVerification(req,res){
   )
   res.json({success: 'Email verification successfully done'})
 }
-module.exports = emailVerification
+
+async function verification(req,res){
+
+  const {id} = req.params;
+  var decoded = jwt.verify(id, 'baig');
+  console.log(decoded);
+  if(decoded){
+    const updateUser = await UserList.findOneAndUpdate(
+      {email: decoded.email},
+      {verified: true},
+      {new:true}
+    )
+  }
+  res.redirect("http://localhost:5173/login")
+}
+
+module.exports = {emailVerification, verification}

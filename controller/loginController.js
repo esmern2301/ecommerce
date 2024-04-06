@@ -18,9 +18,9 @@ async function loginController(req, res) {
             console.log(existingEmail[0].password);
             bcrypt.compare(password, existingEmail[0].password).then(function (result) {
                 if (result) {
-                    res.json({ sucess: "Login Successfully done" })
+                    res.json({ success: "Login Successfully done" })
                 } else {
-                    res.json({ error: "password is not match" })
+                    res.json({ error: " " })
                 }
             });
         }else{
